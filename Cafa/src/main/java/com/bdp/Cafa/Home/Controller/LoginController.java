@@ -1,18 +1,22 @@
-package com.bdp.Cafa.Home.Controller.;
+package com.bdp.Cafa.Home.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoginController {
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "login"; // file: src/main/resources/templates/login.html
+    @GetMapping("/home")
+    public String home() {
+        return "home";
     }
 
-    @GetMapping("/")
-    public String homePage() {
-        return "logout"; // file: src/main/resources/templates/logout.html
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/public/hello")
+    public String hello() {
+        return "hello";
     }
 }
