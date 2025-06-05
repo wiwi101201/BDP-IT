@@ -1,0 +1,15 @@
+@import url("home.css");
+#findbar {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    #textContent {
+        padding: 10px;
+        border: 1px solid #ccc;
+    }
+
+    mark {
+        background-color: yellow;
+    }

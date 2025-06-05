@@ -1,0 +1,21 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div id="sidebar" th:fragment="sidebar">
+    <h5>Menu</h5>
+    <ul class="list-unstyled">
+        <li th:class="${activePage == 'home'} ? 'active' : ''">
+            <a th:href="@{/home}" th:class="${activePage == 'home'} ? 'active' : ''">Home</a>
+        </li>
+        <li th:class="${activePage == 'rules'} ? 'active' : ''">
+            <a th:href="@{/rules}" th:class="${activePage == 'rules'} ? 'active' : ''">Rule List</a>
+        </li>
+        <li th:class="${activePage == 'approval'} ? 'active' : ''">
+            <a th:href="@{/approval}" th:class="${activePage == 'approval'} ? 'active' : ''">Approval</a>
+        </li>
+        <li th:class="${activePage == 'log'} ? 'active' : ''">
+            <a th:href="@{/log}" th:class="${activePage == 'log'} ? 'active' : ''">Log CUD</a>
+        </li>
+        <li th:class="${activePage == 'laporan'} ? 'active' : ''">
+            <a th:href="@{/laporan}" th:class="${activePage == 'laporan'} ? 'active' : ''">Laporan</a>
+        </li>
+    </ul>
+</div>

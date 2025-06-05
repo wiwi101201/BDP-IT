@@ -1,0 +1,23 @@
+ body {
+            padding-top: 56px; /* Untuk memberi ruang untuk navbar tetap di atas */
+        }
+
+        #sidebar {
+            width: 250px;
+            position: fixed;
+            top: 56px;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            background-color: #f8f9fa; /* Warna latar belakang sidebar */
+        }
+
+        #content {
+            margin-left: 250px; /* Lebar sidebar */
+            padding: 20px;
+        }
+
+        #sidebar ul li a.active {
+            font-weight: bold;
+            color: #007bff;
+        }

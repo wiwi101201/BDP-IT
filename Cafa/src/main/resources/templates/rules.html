@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/js/script.js}"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Rules</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/rules.css}">
+
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<!-- Konten Utama -->
+<div id="content">
+    <div id="findbar">
+        <label for="searchInput">Cari:</label>
+        <input type="text" id="searchInput" placeholder="Masukkan kata kunci...">
+        <button id="searchButton">Cari</button>
+        <button id="clearButton">Hapus</button>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const clearButton = document.getElementById('clearButton');
+        const caseSensitive = document.getElementById('caseSensitive');
+        const wholeWord = document.getElementById('wholeWord');
+        const textContent = document.getElementById('textContent');
+
+        searchButton.addEventListener('click', function() {
+            const searchTerm = searchInput.value;
+            const isCaseSensitive = caseSensitive.checked;
+            const isWholeWord = wholeWord.checked;
+
+            let searchText = textContent.innerHTML;
+            let regex;
+
+            if (isWholeWord) {
+                regex = new RegExp("\\b" + escapeRegExp(searchTerm) + "\\b", isCaseSensitive ? "g" : "gi");
+            } else {
+                regex = new RegExp(escapeRegExp(searchTerm), isCaseSensitive ? "g" : "gi");
+            }
+
+            searchText = textContent.innerHTML.replace(/<mark>/g, "").replace(/<\/mark>/g", ""); // Hapus mark sebelumnya
+            searchText = searchText.replace(regex, function(match) {
+                return "<mark>" + match + "</mark>";
+            });
+
+            textContent.innerHTML = searchText;
+        });
+
+        clearButton.addEventListener('click', function() {
+            searchInput.value = '';
+            caseSensitive.checked = false;
+            wholeWord.checked = false;
+            textContent.innerHTML = textContent.innerHTML.replace(/<mark>/g, "").replace(/<\/mark>/g", ""); // Hapus mark
+        });
+
+        // Function to escape special characters for regular expression
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+    });
+</script>
+
+
+<!-- Bootstrap JavaScript (Urutan penting: jQuery, Popper.js, Bootstrap JS) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
