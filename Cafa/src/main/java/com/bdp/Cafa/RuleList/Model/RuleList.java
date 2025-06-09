@@ -1,9 +1,9 @@
 package com.bdp.Cafa.RuleList.Model;
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "products")
-public class ruleList {
+@Table(name = "rules")
+public class RuleList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,7 +11,7 @@ public class ruleList {
 
     private String name;
 
-    private String String description;
+    private String description;
 
     // Getters and setters
     public Long getId() {

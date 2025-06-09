@@ -1,4 +1,4 @@
-package com.bdp.Cafa.Home.Config;
+package com.bdp.Cafa.Login.Config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +43,11 @@ public class WebSecurityConfig {
                 .password("admin")
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        UserDetails test = User.withDefaultPasswordEncoder()
+                .username("ww")
+                .password("ww")
+                .roles("ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin, test);
     }
 }

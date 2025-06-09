@@ -7,6 +7,23 @@
     <title>Halaman Rules</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/rules.css}">
+    <style>
+      .card-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+      }
+      .card {
+          background-color: #f2f2f2;
+          border-radius: 12px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+          padding: 20px;
+          width: 280px;
+      }
+      .card h2 {
+          margin-top: 0;
+      }
+    </style>
 
 </head>
 <body>
@@ -16,56 +33,27 @@
 <!-- Konten Utama -->
 <div id="content">
     <div id="findbar">
-        <label for="searchInput">Cari:</label>
-        <input type="text" id="searchInput" placeholder="Masukkan kata kunci...">
-        <button id="searchButton">Cari</button>
-        <button id="clearButton">Hapus</button>
+        <form method="get" th:action="@{/rules}">
+            <input type="text" name="keyword" placeholder="Cari rule..." th:value="${keyword}" />
+            <button type="submit">Search</button>
+        </form>
+
+    </div>
+
+    <div th:if="${#lists.isEmpty(rulesList)}">
+        <p>Tidak ada hasil.</p>
+    </div>
+
+    <div id ="listRules">
+        <div class="card-container">
+            <div class="card" th:each="rule : ${rulesList}">
+                <h3 th:text="${rule.name}">Rule Name</h3>
+                <p><strong>ID:</strong> <span th:text="${rule.id}">1</span></p>
+                <p><strong>Deskripsi:</strong> <span th:text="${rule.description}">Deskripsi</span></p>
+            </div>
+        </div>
     </div>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const clearButton = document.getElementById('clearButton');
-        const caseSensitive = document.getElementById('caseSensitive');
-        const wholeWord = document.getElementById('wholeWord');
-        const textContent = document.getElementById('textContent');
-
-        searchButton.addEventListener('click', function() {
-            const searchTerm = searchInput.value;
-            const isCaseSensitive = caseSensitive.checked;
-            const isWholeWord = wholeWord.checked;
-
-            let searchText = textContent.innerHTML;
-            let regex;
-
-            if (isWholeWord) {
-                regex = new RegExp("\\b" + escapeRegExp(searchTerm) + "\\b", isCaseSensitive ? "g" : "gi");
-            } else {
-                regex = new RegExp(escapeRegExp(searchTerm), isCaseSensitive ? "g" : "gi");
-            }
-
-            searchText = textContent.innerHTML.replace(/<mark>/g, "").replace(/<\/mark>/g", ""); // Hapus mark sebelumnya
-            searchText = searchText.replace(regex, function(match) {
-                return "<mark>" + match + "</mark>";
-            });
-
-            textContent.innerHTML = searchText;
-        });
-
-        clearButton.addEventListener('click', function() {
-            searchInput.value = '';
-            caseSensitive.checked = false;
-            wholeWord.checked = false;
-            textContent.innerHTML = textContent.innerHTML.replace(/<mark>/g, "").replace(/<\/mark>/g", ""); // Hapus mark
-        });
-
-        // Function to escape special characters for regular expression
-        function escapeRegExp(string) {
-            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        }
-    });
-</script>
 
 
 <!-- Bootstrap JavaScript (Urutan penting: jQuery, Popper.js, Bootstrap JS) -->
