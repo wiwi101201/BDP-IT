@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/js/script.js}"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Rules</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/rules.css}">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+<!-- Konten Utama -->
+<div id="content">
+    <h1 th:text="${rule.configkey}"></h1>
+
+    <h1>Dynamic Form</h1>
+    <form>
+    <div th:if="${rule.configtype == 'EVENT'}">
+
+            <div th:each="listEntry: ${properties}" class="form-group">
+                <label th:text="${listEntry.get('key')}" class="form-label"></label>
+                <label th:text="${listEntry.get('value')}" class="form-label"></label>
+                    </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <div th:elseif="${rule.configtype == 'CAMPAIGN'}">
+        <H1>ini campaign</H1>
+    </div>
+</form>
+            <!--            <div th:with="trackable=${listEntry.get('trackable')}">-->
+<!--                <input th:if="${trackable instanceof T(java.lang.Boolean)}"-->
+<!--                       type="checkbox"-->
+<!--                       th:checked="${trackable}"-->
+<!--                       class="form-check-input"/>-->
+
+<!--                <input th:unless="${trackable instanceof T(java.lang.Boolean)"-->
+<!--                       type="text"-->
+<!--                       th:value="${trackable}"-->
+<!--                       class="form-control"/>-->
+<!--                </div>-->
+
+<!--            &lt;!&ndash; Default case (if no type matches) &ndash;&gt;-->
+<!--            <span th:unless="${listEntry.get('trackable') instanceof T(java.lang.String) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Integer) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Boolean) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Double) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.util.Date)}"-->
+<!--                  th:text="'Unsupported type: ' + ${listEntry.get('trackable')?.getClass()?.getSimpleName()}"-->
+<!--                  class="form-text text-muted"></span>-->
+
+<!--            <div th:if="${#String.isEmpty(listEntry.get('pii'))}">-->
+<!--            </div>-->
+<!--            <div th:unless="${#String.isEmpty(listEntry.get('pii'))}">-->
+<!--                <input th:if="${listEntry.get('pii') instanceof T(java.lang.Boolean)}"-->
+<!--                       type="checkbox"-->
+<!--                       th:checked="${listEntry.get('pii')}"-->
+<!--                       class="form-check-input"/>-->
+
+<!--                <input th:unless="${listEntry.get('pii') instanceof T(java.lang.Boolean)"-->
+<!--                       type="text"-->
+<!--                       th:value="${listEntry.get('pii')}"-->
+<!--                       class="form-control"/>-->
+<!--            </div>-->
+        </div>
+    </form>
+<!--    <form>-->
+<!--        <div th:each="listEntry: ${properties}" class="form-group">-->
+<!--        <div th:each="entry : ${listEntry.entrySet()}" class="form-group">-->
+<!--            <label th:text="${entry.key}" class="form-label"></label>-->
+
+<!--            <input th:if="${listEntry.get('trackable') instanceof T(java.lang.String)}"-->
+<!--                   type="text"-->
+<!--                   th:value="${listEntry.get('trackable')}"-->
+<!--                   class="form-control"/>-->
+
+<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Integer)}"-->
+<!--                   type="number"-->
+<!--                   th:value="${listEntry.get('trackable')}"-->
+<!--                   class="form-control"/>-->
+
+<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Boolean)}"-->
+<!--                   type="checkbox"-->
+<!--                   th:checked="${listEntry.get('trackable')}"-->
+<!--                   class="form-check-input"/>-->
+
+<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Double)}"-->
+<!--                   type="number"-->
+<!--                   step="0.01"-->
+<!--            th:value="${listEntry.get('trackable')}"-->
+<!--            class="form-control"/>-->
+
+<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.util.Date)}"-->
+<!--                   type="date"-->
+<!--                   th:value="${#dates.format(listEntry.get('trackable'), 'yyyy-MM-dd')}"-->
+<!--            class="form-control"/>-->
+
+<!--            <textarea th:elseif="${listEntry.get('trackable') instanceof T(java.lang.String) and #strings.length(listEntry.get('trackable')) > 50}"-->
+<!--                      th:text="${listEntry.get('trackable')}"-->
+<!--                      class="form-control"></textarea>-->
+
+<!--            &lt;!&ndash; Default case (if no type matches) &ndash;&gt;-->
+<!--            <span th:unless="${listEntry.get('trackable') instanceof T(java.lang.String) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Integer) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Boolean) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.lang.Double) or-->
+<!--                               listEntry.get('trackable') instanceof T(java.util.Date)}"-->
+<!--                  th:text="'Unsupported type: ' + ${listEntry.get('trackable')?.getClass()?.getSimpleName()}"-->
+<!--                  class="form-text text-muted"></span>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--        <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--    </form>-->
+
+</div>
+
+
+<!-- Bootstrap JavaScript (Urutan penting: jQuery, Popper.js, Bootstrap JS) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
