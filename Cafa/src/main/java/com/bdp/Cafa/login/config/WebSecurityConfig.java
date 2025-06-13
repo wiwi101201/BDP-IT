@@ -1,4 +1,4 @@
-package com.bdp.Cafa.Login.Config;
+package com.bdp.Cafa.login.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,7 +19,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers("/public/**", "/login", "/css/**", "/js/**").permitAll() // Allow public resources
 //                        .anyRequest().authenticated()
+
                         .anyRequest().permitAll()
+
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
@@ -27,6 +29,7 @@ public class WebSecurityConfig {
                         .permitAll()
                 )
                 .logout((logout) -> logout
+                        .logoutSuccessUrl("/login?logout") // Redirect ke halaman login dengan parameter logout
                         .permitAll());
 
         return http.build();

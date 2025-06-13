@@ -35,12 +35,13 @@
 
 <!-- Konten Utama -->
 <div id="content">
-    <div id="findbar">
+    <div id="findbar" style="display: flex; justify-content: space-between; align-items: center;">
         <form method="get" th:action="@{/rules}">
             <input type="text" name="keyword" placeholder="Cari rule..." th:value="${keyword}" />
             <button type="submit">Search</button>
         </form>
 
+        <a th:href="@{/rules/create}" class="btn btn-primary">Create</a>
     </div>
 
     <div th:if="${#lists.isEmpty(ruleLists)}">
@@ -48,29 +49,37 @@
     </div>
     <div id="listRules">
         <div class="card-container">
-            <form th:action="@{/rule-detail}" method="get" th:each="rule : ${ruleLists}">
-                <input type="hidden" name="configkey" th:value="${rule.configkey}" />
-                <button type="submit">
-                    <div class="card">
-                        <h3 th:text="${rule.configkey}">Rule Name</h3>
-                        <p><strong>ID:</strong> <span th:text="${rule.configtype}">1</span></p>
-                        <p><strong>Deskripsi:</strong> <span th:text="${rule.createdon}">Deskripsi</span></p>
-                    </div>
-                </button>
-            </form>
-
-<!--            <a th:href="@{/rule/{index}(index=${loop.index})}" th:each="rule, loop : ${ruleLists}">-->
-<!--                <div class="card">-->
-<!--                    <h3 th:text="${rule.configkey}">Rule Name</h3>-->
-<!--                    <p><strong>ID:</strong> <span th:text="${rule.configtype}">1</span></p>-->
-<!--                    <p><strong>Deskripsi:</strong> <span th:text="${rule.createdon}">Deskripsi</span></p>-->
-<!--                </div>-->
-<!--            </a>-->
-
+            <div th:each="rule : ${ruleLists}" class="rule-item">  <!-- Ganti form dengan div -->
+                <form th:action="@{/rule-detail}" method="get">
+                    <input type="hidden" name="configkey" th:value="${rule.configkey}" />
+                    <button type="submit" class="rule-card-button">  <!-- Tambahkan class untuk styling -->
+                        <div class="card">
+                            <h3 th:text="${rule.configkey}">Rule Name</h3>
+                            <p><strong>ID:</strong> <span th:text="${rule.configtype}">1</span></p>
+                            <p><strong>Deskripsi:</strong> <span th:text="${rule.createdon}">Deskripsi</span></p>
+                        </div>
+                    </button>
+                </form>
+                <!-- Tombol Delete -->
+                <input type="hidden" th:value="${rule.configtype}" name="type">
+                <button class="delete-button" th:data-configkey="${rule.configkey}" onclick="confirmDelete(this)">Delete</button>  <!-- Tambahkan onclick -->
+            </div>
         </div>
     </div>
-
 </div>
+</div>
+
+<script>
+    function confirmDelete(button) {
+        var configKey = button.getAttribute('data-configkey');
+        var configTypeElements = document.getElementsByName('type');
+        var configType = configTypeElements[0].value;
+
+        if (confirm("Apakah Anda yakin ingin menghapus rule ini?")) {
+            window.location.href = '/delete-rule?configkey=' + configKey + '&configtype=' + configType;
+        }
+    }
+</script>
 
 
 <!-- Bootstrap JavaScript (Urutan penting: jQuery, Popper.js, Bootstrap JS) -->

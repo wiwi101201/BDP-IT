@@ -13,23 +13,18 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Cafa</name>
 	<description>Project Improvement BDP IT 3</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
+		<!--Schemas-->
+		<dependency>
+			<groupId>iep.cms.starter</groupId>
+			<artifactId>fly-starter-schema-campaign</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>

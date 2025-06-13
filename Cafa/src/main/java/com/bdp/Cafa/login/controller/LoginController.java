@@ -1,4 +1,4 @@
-package com.bdp.Cafa.Login.Controller;
+package com.bdp.Cafa.login.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

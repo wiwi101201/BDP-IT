@@ -1,4 +1,4 @@
-package com.bdp.Cafa.RuleList.Model;
+package com.bdp.Cafa.ruleList.model;
 import jakarta.persistence.*;
 
 @Entity
@@ -6,10 +6,10 @@ import jakarta.persistence.*;
 public class RuleList {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Auto-generate the ID
-    private Long id;  // Add a separate ID field
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(unique = true) // Ensure configtype is unique if it's important
+    @Column(unique = true)
     private String configtype;
     private String configkey;
     private String createdon;

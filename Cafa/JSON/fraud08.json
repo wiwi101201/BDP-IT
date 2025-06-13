@@ -1,0 +1,261 @@
+{
+  "id": "FRD-BCA-CC-08",
+  "stage": "DEV",
+  "name": "Notification Transaction BCA CC 08",
+  "shortDesc": "Notification transaction for successful individual customer transaction",
+  "longDesc": "Notification transaction for successful individual customer transaction",
+  "startOn": "01/01/2017",
+  "endOn": "30/12/2099",
+  "owner": "Layanan GLT",
+  "objective": "Notification Transaction",
+  "productGroup": "Notification",
+  "type": "Broadcast",
+  "priority": "IND_SUCCESS:2",
+  "suspicion": [
+    {
+      "ruleId": "FRD-BCA-CC-08",
+      "eligibilityGroup": "SUSPECTED-1",
+      "eventType": "EDC_TRANSACTION",
+      "ruleMatchings": [
+        {
+          "name": "RESP_CDE",
+          "operator": "IN",
+          "value": [
+            "10",
+            "11",
+            "13",
+            "15"
+          ]
+        },
+        {
+          "name": "TERM_CNTRY_CDE",
+          "operator": "IN",
+          "value": ["62", "ID"]
+        },
+        {
+          "name": "AMT_1",
+          "operator": ">",
+          "value": ["100"]
+        },
+        {
+          "name": "TC",
+          "operator": "IN",
+          "value": ["10","11","13","15"]
+        },
+        {
+          "name": "TYP",
+          "operator": "IN",
+          "value": [
+            "210",
+            "220"
+          ]
+        },
+        {
+          "name": "CRD_FIID",
+          "operator": "=",
+          "value": [
+            "BCA2"
+          ]
+        },
+        {
+          "name": "TERM_FIID",
+          "operator": "!=",
+          "value": [
+            "QRP1"
+          ]
+        },
+        {
+          "name": "CARD_TYPE_CD",
+          "operator": "NOTIN",
+          "value": [
+            "027",
+            "048"
+          ]
+        },
+        {
+          "name": "CUST_CORP_IND",
+          "operator": "=",
+          "value": [
+            "N"
+          ]
+        },
+        {
+          "name": "CUST_CC_EMAIL_IND",
+          "operator": "=",
+          "value": [
+            "Y"
+          ]
+        }
+      ],
+      "contacts": [
+        {
+          "contactSeq": [
+            {
+              "channel": "EMAIL",
+              "template": "NOTIF_ACQGENERAL_CMM",
+              "recipient": "%%CUST_FUNDING_EMAIL%%",
+              "limits": [
+                {
+                  "key": "%%RULEID%%-%%CUST_NO%%-MARKETING",
+                  "threshold": "1",
+                  "expiration": {
+                    "period": "2",
+                    "unit": "WEEK"
+                  }
+                }
+              ],
+              "property": [
+                {
+                  "key": "EMAIL_CC",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_BCC",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_CUSTOM_SUBJECT",
+                  "value": "Acquisition - General"
+                },
+                {
+                  "key": "EMAIL_PARAM",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_ATTACHMENT",
+                  "value": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "ruleId": "C-GBC-ACQ-GENERAL",
+      "eligibilityGroup": "ELIGIBLE-2",
+      "eventType": "EDC_TRANSACTION",
+      "ruleMatchings": [
+        {
+          "name": "RESP_CDE",
+          "operator": "IN",
+          "value": ["0", "1", "000", "001"]
+        },
+        {
+          "name": "TC",
+          "operator": "IN",
+          "value": ["10", "13"]
+        },
+        {
+          "name": "TYP",
+          "operator": "IN",
+          "value": ["210", "220"]
+        },
+        {
+          "name": "CRD_FIID",
+          "operator": "NOTIN",
+          "value": ["BCA", "BCA2"]
+        },
+        {
+          "name": "TERM_CNTRY_CDE",
+          "operator": "IN",
+          "value": ["ID", "62"]
+        },
+        {
+          "name": "CUSTOMER_NONBCA_CC",
+          "operator": "=",
+          "value": ["TRUE"]
+        },
+        {
+          "name": "CUSTOMER_BCA_CC",
+          "operator": "=",
+          "value": ["FALSE"]
+        },
+        {
+          "name": "TOT_MTH3_AVGTRX_CR_IDR",
+          "operator": ">",
+          "value": ["3000000"]
+        },
+        {
+          "name": "COLLECT_CIS",
+          "operator": "IN",
+          "value": ["1", "", " ", "NULL"]
+        },
+        {
+          "name": "TELEMARKETING_CD",
+          "operator": "IN",
+          "value": ["A", "B", "C", "D"]
+        },
+        {
+          "function": "AGEYEAR",
+          "name": "DT_OF_BIRTH",
+          "operator": "BETWEEN",
+          "value": ["21", "60"]
+        },
+        {
+          "name": "MERCHANT_LNG_NM",
+          "operator": "NOTCONTAIN",
+          "value": ["MATAHARI", "STARBUCKS", "SBUX"]
+        },
+        {
+          "name": "CUST_BCA_EMPLOYEE_INDICATOR",
+          "operator": "=",
+          "value": ["N"]
+        },
+        {
+          "name": "PRIORITY_IND",
+          "operator": "=",
+          "value": ["N"]
+        },
+        {
+          "name": "SOLITAIRE_IND",
+          "operator": "=",
+          "value": ["N"]
+        }
+      ],
+      "contacts": [
+        {
+          "contactSeq": [
+            {
+              "channel": "EMAIL",
+              "template": "NOTIF_ACQGENERAL_CMM",
+              "recipient": "%%CUST_FUNDING_EMAIL%%",
+              "limits": [
+                {
+                  "key": "%%RULEID%%-%%CUST_NO%%-MARKETING",
+                  "threshold": "1",
+                  "expiration": {
+                    "period": "2",
+                    "unit": "WEEK"
+                  }
+                }
+              ],
+              "property": [
+                {
+                  "key": "EMAIL_CC",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_BCC",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_CUSTOM_SUBJECT",
+                  "value": "Acquisition - General"
+                },
+                {
+                  "key": "EMAIL_PARAM",
+                  "value": ""
+                },
+                {
+                  "key": "EMAIL_ATTACHMENT",
+                  "value": ""
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

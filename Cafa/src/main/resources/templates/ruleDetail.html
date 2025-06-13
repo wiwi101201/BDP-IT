@@ -18,103 +18,117 @@
 
     <h1>Dynamic Form</h1>
     <form>
+        <h1 th:text="${rule.configtype}"></h1>
     <div th:if="${rule.configtype == 'EVENT'}">
+            <div th:each="listEntry: ${event.getProperties()}" class="form-group">
+                <label th:text="${listEntry.getKey()}" class="form-label"></label>
+                <label th:text="${listEntry.getValue()}" class="form-label"></label>
 
-            <div th:each="listEntry: ${properties}" class="form-group">
-                <label th:text="${listEntry.get('key')}" class="form-label"></label>
-                <label th:text="${listEntry.get('value')}" class="form-label"></label>
+                <div th:if="${listEntry.isTrackable()}">
+                    <input type="checkbox" th:value="${listEntry.isTrackable()}" class="form-check-input" checked/>
+                    <label class="form-check-label">Trackable</label>
+                </div>
+                <div th:unless="${listEntry.isTrackable()}">
+                    <input type="checkbox" th:value="${listEntry.isTrackable()}" class="form-check-input"/>
+                    <label class="form-check-label">Trackable</label>
+                </div>
+
+                <div th:if="${listEntry.isPii()}">
+                    <input type="checkbox" th:value="${listEntry.isPii()}" class="form-check-input" checked/>
+                    <label class="form-check-label">PII</label>
+                </div>
+                <div th:unless="${listEntry.isPii()}">
+                    <input type="checkbox" th:value="${listEntry.isPii()}" class="form-check-input"/>
+                    <label class="form-check-label">PII</label>
+                </div>
                     </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-    <div th:elseif="${rule.configtype == 'CAMPAIGN'}">
-        <H1>ini campaign</H1>
-    </div>
-</form>
-            <!--            <div th:with="trackable=${listEntry.get('trackable')}">-->
-<!--                <input th:if="${trackable instanceof T(java.lang.Boolean)}"-->
-<!--                       type="checkbox"-->
-<!--                       th:checked="${trackable}"-->
-<!--                       class="form-check-input"/>-->
-
-<!--                <input th:unless="${trackable instanceof T(java.lang.Boolean)"-->
-<!--                       type="text"-->
-<!--                       th:value="${trackable}"-->
-<!--                       class="form-control"/>-->
-<!--                </div>-->
-
-<!--            &lt;!&ndash; Default case (if no type matches) &ndash;&gt;-->
-<!--            <span th:unless="${listEntry.get('trackable') instanceof T(java.lang.String) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Integer) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Boolean) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Double) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.util.Date)}"-->
-<!--                  th:text="'Unsupported type: ' + ${listEntry.get('trackable')?.getClass()?.getSimpleName()}"-->
-<!--                  class="form-text text-muted"></span>-->
-
-<!--            <div th:if="${#String.isEmpty(listEntry.get('pii'))}">-->
-<!--            </div>-->
-<!--            <div th:unless="${#String.isEmpty(listEntry.get('pii'))}">-->
-<!--                <input th:if="${listEntry.get('pii') instanceof T(java.lang.Boolean)}"-->
-<!--                       type="checkbox"-->
-<!--                       th:checked="${listEntry.get('pii')}"-->
-<!--                       class="form-check-input"/>-->
-
-<!--                <input th:unless="${listEntry.get('pii') instanceof T(java.lang.Boolean)"-->
-<!--                       type="text"-->
-<!--                       th:value="${listEntry.get('pii')}"-->
-<!--                       class="form-control"/>-->
-<!--            </div>-->
+    <div th:if="${rule.configtype == 'CAMPAIGN'}">
+        <h1>Campaign Details</h1>
+        <div class="tab">
+            <div th:each="eligibility : ${campaign.getEligibility()}" class="eligibility-group">
+                <button class="tablinks" onclick="openRuleMatching(event, this.dataset.groupName)" type="button" th:text="${eligibility.getEligibilityGroup()}" th:data-group-name="${eligibility.getEligibilityGroup()}"></button>
         </div>
-    </form>
-<!--    <form>-->
-<!--        <div th:each="listEntry: ${properties}" class="form-group">-->
-<!--        <div th:each="entry : ${listEntry.entrySet()}" class="form-group">-->
-<!--            <label th:text="${entry.key}" class="form-label"></label>-->
+        </div>
 
-<!--            <input th:if="${listEntry.get('trackable') instanceof T(java.lang.String)}"-->
-<!--                   type="text"-->
-<!--                   th:value="${listEntry.get('trackable')}"-->
-<!--                   class="form-control"/>-->
+        <div th:each="eligibility : ${campaign.getEligibility()}" class="eligibility-group">
+            <div th:id="${eligibility.getEligibilityGroup()}" class="tabcontent">
+                <h3>Eligibility Group: <span th:text="${eligibility.getEligibilityGroup()}"></span></h3>
+                <p>Rule ID: <span th:text="${eligibility.getRuleId()}"></span></p>
+                <p>Event Type: <span th:text="${eligibility.getEventType()}"></span></p>
 
-<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Integer)}"-->
-<!--                   type="number"-->
-<!--                   th:value="${listEntry.get('trackable')}"-->
-<!--                   class="form-control"/>-->
 
-<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Boolean)}"-->
-<!--                   type="checkbox"-->
-<!--                   th:checked="${listEntry.get('trackable')}"-->
-<!--                   class="form-check-input"/>-->
+                <h4>Rule Matchings:</h4>
+                <ul th:each="ruleMatching : ${eligibility.getRuleMatchings()}">
+                    <li>
+                        <strong>Name:</strong> <span th:text="${ruleMatching.getName()}"></span><br/>
+                        <strong>Operator:</strong> <span th:text="${ruleMatching.getOperator()}"></span><br/>
+                        <strong>Value:</strong>
+                        <ul th:each="value : ${ruleMatching.getValue()}">
+                            <li><span th:text="${value}"></span></li>
+                        </ul>
+                    </li>
+                </ul>
 
-<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.lang.Double)}"-->
-<!--                   type="number"-->
-<!--                   step="0.01"-->
-<!--            th:value="${listEntry.get('trackable')}"-->
-<!--            class="form-control"/>-->
+                <h4>Contacts:</h4>
+                <div th:each="contact : ${eligibility.getContacts()}">
+                    <h5>Contact Sequence:</h5>
+                    <div th:each="contactSeq : ${contact.getContactSeq()}">
+                        <p>Channel: <span th:text="${contactSeq.getChannel()}"></span></p>
+                        <p>Template: <span th:text="${contactSeq.getTemplate()}"></span></p>
+                        <p>Recipient: <span th:text="${contactSeq.getRecipient()}"></span></p>
 
-<!--            <input th:elseif="${listEntry.get('trackable') instanceof T(java.util.Date)}"-->
-<!--                   type="date"-->
-<!--                   th:value="${#dates.format(listEntry.get('trackable'), 'yyyy-MM-dd')}"-->
-<!--            class="form-control"/>-->
+                        <h6>Properties:</h6>
+                        <ul th:each="property : ${contactSeq.getProperty()}">
+                            <li>
+                                <strong>Key:</strong> <span th:text="${property.getKey()}"></span><br/>
+                                <strong>Value:</strong> <span th:text="${property.getValue()}"></span>
+                            </li>
+                        </ul>
 
-<!--            <textarea th:elseif="${listEntry.get('trackable') instanceof T(java.lang.String) and #strings.length(listEntry.get('trackable')) > 50}"-->
-<!--                      th:text="${listEntry.get('trackable')}"-->
-<!--                      class="form-control"></textarea>-->
-
-<!--            &lt;!&ndash; Default case (if no type matches) &ndash;&gt;-->
-<!--            <span th:unless="${listEntry.get('trackable') instanceof T(java.lang.String) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Integer) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Boolean) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.lang.Double) or-->
-<!--                               listEntry.get('trackable') instanceof T(java.util.Date)}"-->
-<!--                  th:text="'Unsupported type: ' + ${listEntry.get('trackable')?.getClass()?.getSimpleName()}"-->
-<!--                  class="form-text text-muted"></span>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--        <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--    </form>-->
-
+                        <h6>Limits:</h6>
+                        <ul th:each="limit : ${contactSeq.getLimits()}">
+                            <li>
+                                <strong>Key:</strong> <span th:text="${limit.getKey()}"></span><br/>
+                                <strong>Threshold:</strong> <span th:text="${limit.getThreshold()}"></span><br/>
+                                <strong>Expiration Period:</strong> <span th:text="${limit.getExpiration().getPeriod()}"></span><br/>
+                                <strong>Expiration Unit:</strong> <span th:text="${limit.getExpiration().getUnit()}"></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+        <div th:if="${rule.configtype == 'FRAUD'}">
+            <h1>FRAUDD</h1>
+        </div>
+</form>
 </div>
+
+<script>
+    function openRuleMatching(evt, ruleName) {
+       var i, tabcontent, tablinks;
+       tabcontent = document.getElementsByClassName("tabcontent");
+       for (i = 0; i < tabcontent.length; i++) {
+           tabcontent[i].style.display = "none";
+       }
+       tablinks = document.getElementsByClassName("tablinks");
+       for (i = 0; i < tablinks.length; i++) {
+           tablinks[i].className = tablinks[i].className.replace(" active", "");
+       }
+       document.getElementById(ruleName).style.display = "block";
+       evt.currentTarget.className += " active";
+   }
+  window.onload = function() {
+        var firstTab = document.querySelector('.tablinks');
+        if (firstTab) {
+            openRuleMatching(null, firstTab.dataset.groupName);
+        }
+    };
+</script>
 
 
 <!-- Bootstrap JavaScript (Urutan penting: jQuery, Popper.js, Bootstrap JS) -->
